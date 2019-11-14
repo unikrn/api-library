@@ -128,6 +128,7 @@ class Contacts extends Api
      * @param string $orderBy
      * @param string $orderByDir
      * @param int    $page
+     * @param int    $timeout
      *
      * @return array|mixed
      *
@@ -140,9 +141,10 @@ class Contacts extends Api
         array $excludeEvents = array(),
         $orderBy = '',
         $orderByDir = 'ASC',
-        $page = 1
+        $page = 1,
+        $timeout = null
     ) {
-        return $this->fetchActivity('/'.$id.'/events', $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page);
+        return $this->fetchActivity('/'.$id.'/events', $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page, null, null, $timeout);
     }
 
     /**
@@ -157,7 +159,8 @@ class Contacts extends Api
      * @param int       $page
      * @param \DateTime $dateFrom
      * @param \DateTime $dateTo
-     *
+     * @param int    $timeout
+         *
      * @return array|mixed
      */
     public function getActivityForContact(
@@ -169,9 +172,10 @@ class Contacts extends Api
         $orderByDir = 'ASC',
         $page = 1,
         \DateTime $dateFrom = null,
-        \DateTime $dateTo = null
+        \DateTime $dateTo = null,
+        $timeout = null
     ) {
-        return $this->fetchActivity('/'.$id.'/activity', $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page, $dateFrom, $dateTo);
+        return $this->fetchActivity('/'.$id.'/activity', $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page, $dateFrom, $dateTo, $timeout);
     }
 
     /**
@@ -214,6 +218,7 @@ class Contacts extends Api
      * @param int       $page
      * @param \DateTime $dateFrom
      * @param \DateTime $dateTo
+     * @param int       $timeout
      *
      * @return array|mixed
      */
@@ -226,7 +231,8 @@ class Contacts extends Api
         $orderByDir = 'ASC',
         $page = 1,
         \DateTime $dateFrom = null,
-        \DateTime $dateTo = null
+        \DateTime $dateTo = null,
+        $timeout = null
     ) {
         $parameters = array(
             'filters' => array(
@@ -249,7 +255,7 @@ class Contacts extends Api
             $parameters['filters']['dateTo'] = $dateTo->format('Y-m-d H:i:s');
         }
 
-        return $this->makeRequest($this->endpoint.$path, $parameters);
+        return $this->makeRequest($this->endpoint.$path, $parameters, 'GET', $timeout);
     }
 
     /**

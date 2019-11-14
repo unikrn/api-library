@@ -203,11 +203,12 @@ class Api implements LoggerAwareInterface
      * @param        $endpoint
      * @param array  $parameters
      * @param string $method
+     * @param int    $timeout
      *
      * @return array
      * @throws \Exception
      */
-    public function makeRequest($endpoint, array $parameters = array(), $method = 'GET')
+    public function makeRequest($endpoint, array $parameters = array(), $method = 'GET', $timeout = null)
     {
         $response = array();
 
@@ -258,6 +259,8 @@ class Api implements LoggerAwareInterface
                     if (method_exists($this, 'getTemporaryFilePath')) {
                         $settings['temporaryFilePath'] = $this->getTemporaryFilePath();
                     }
+                    if($timeout)
+                        $this->auth->setCurlTimeout((int)$timeout);
                     $response = $this->auth->makeRequest($url, $parameters, $method, $settings);
 
                     $this->getLogger()->debug('API Response', array('response' => $response));
