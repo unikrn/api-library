@@ -124,9 +124,7 @@ abstract class AbstractAuth implements AuthInterface
             CURLOPT_HEADER         => true
         );
 
-        if ($this->_curlTimeout !== null) {
-            $options[CURLOPT_TIMEOUT] = $this->_curlTimeout;
-        }
+        $options[CURLOPT_TIMEOUT] = $this->_curlTimeout ?? 5;
 
         // CURLOPT_FOLLOWLOCATION cannot be activated when an open_basedir is set
         $options[CURLOPT_FOLLOWLOCATION] = (ini_get('open_basedir')) ? false : true;
