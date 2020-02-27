@@ -448,4 +448,18 @@ class Contacts extends Api
             'POST'
         );
     }
+
+    /**
+     * Merge 2 contacts
+     *
+     * @param int    $id
+     * @param int    $merge_contact_id
+     *
+     * @return array|mixed
+     */
+    public function merge($id, $merge_contact_id){
+        $supported = $this->isSupported('merge');
+        return (true === $supported) ? $this->makeRequest('contacts/'.$id.'/merge/', ['lead_to_merge' => $merge_contact_id], 'POST') : $supported;
+    }
+
 }
