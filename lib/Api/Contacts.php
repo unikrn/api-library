@@ -459,7 +459,7 @@ class Contacts extends Api
      */
     public function merge($id, $merge_contact_id){
         $supported = $this->isSupported('merge');
-        return (true === $supported) ? $this->makeRequest('contacts/'.$id.'/merge/', ['lead_to_merge' => $merge_contact_id], 'POST') : $supported;
+        return (true === $supported) ? $this->makeRequest('contacts/'.$id.'/merge', ['lead_to_merge' => $merge_contact_id], 'POST') : $supported;
     }
 
 }
