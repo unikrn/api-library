@@ -107,4 +107,14 @@ class Segments extends Api
     {
         return $this->removeContact($id, $leadId);
     }
+
+    /**
+     * Returns an array of all segments and the number of leads per segment
+     *
+     * @param null|integer $mincount    Minimum number of leads a segment must contain to be included in the result
+     * @return array|mixed
+     */
+    public function getLeadCounts($mincount = null){
+        return $this->makeRequest($this->endpoint.'/leadcounts', ['mincount' => $mincount], 'POST');
+    }
 }
