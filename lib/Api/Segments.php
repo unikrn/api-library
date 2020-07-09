@@ -85,12 +85,13 @@ class Segments extends Api
      *
      * @param int $segmentId Segment ID
      * @param int $contactId Contact ID
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function removeContact($segmentId, $contactId)
+    public function removeContact($segmentId, $contactId, $timeout = 5)
     {
-        return $this->makeRequest($this->endpoint.'/'.$segmentId.'/contact/'.$contactId.'/remove', array(), 'POST');
+        return $this->makeRequest($this->endpoint.'/'.$segmentId.'/contact/'.$contactId.'/remove', array(), 'POST', $timeout);
     }
 
     /**

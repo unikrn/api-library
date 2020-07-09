@@ -386,25 +386,27 @@ class Api implements LoggerAwareInterface
      * Get a single item
      *
      * @param int $id
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function get($id)
+    public function get($id, $timeout = 5)
     {
-        return $this->makeRequest("{$this->endpoint}/$id");
+        return $this->makeRequest("{$this->endpoint}/$id", [], 'GET', $timeout);
     }
 
     /**
      * @param       $id
      * @param array $select
+     * @param int $timeout
      *
      * @return array|bool
      */
-    public function getCustom($id, array $select = array())
+    public function getCustom($id, array $select = array(), $timeout = 5)
     {
         $supported = $this->isSupported('get');
 
-        return (true === $supported) ? $this->makeRequest("{$this->endpoint}/$id", array('select' => $select)) : $supported;
+        return (true === $supported) ? $this->makeRequest("{$this->endpoint}/$id", array('select' => $select), 'GET', $timeout) : $supported;
     }
 
     /**
@@ -417,10 +419,11 @@ class Api implements LoggerAwareInterface
      * @param string $orderByDir
      * @param bool   $publishedOnly
      * @param bool   $minimal
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function getList($search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC', $publishedOnly = false, $minimal = false)
+    public function getList($search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC', $publishedOnly = false, $minimal = false, $timeout = 5)
     {
         $parameters = array(
             'search'        => $search,
@@ -434,7 +437,7 @@ class Api implements LoggerAwareInterface
 
         $parameters = array_filter($parameters);
 
-        return $this->makeRequest($this->endpoint, $parameters);
+        return $this->makeRequest($this->endpoint, $parameters, 'GET', $timeout);
     }
 
     /**
@@ -481,28 +484,30 @@ class Api implements LoggerAwareInterface
      * Create a new item (if supported)
      *
      * @param array $parameters
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function create(array $parameters)
+    public function create(array $parameters, $timeout = 5)
     {
         $supported = $this->isSupported('create');
 
-        return (true === $supported) ? $this->makeRequest($this->endpoint.'/new', $parameters, 'POST') : $supported;
+        return (true === $supported) ? $this->makeRequest($this->endpoint.'/new', $parameters, 'POST', $timeout) : $supported;
     }
 
     /**
      * Create a batch of new items
      *
      * @param array $parameters
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function createBatch(array $parameters)
+    public function createBatch(array $parameters, $timeout = 5)
     {
         $supported = $this->isSupported('createBatch');
 
-        return (true === $supported) ? $this->makeRequest($this->endpoint.'/batch/new', $parameters, 'POST') : $supported;
+        return (true === $supported) ? $this->makeRequest($this->endpoint.'/batch/new', $parameters, 'POST', $timeout) : $supported;
     }
 
     /**
@@ -511,15 +516,16 @@ class Api implements LoggerAwareInterface
      * @param int   $id
      * @param array $parameters
      * @param bool  $createIfNotExists = false
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function edit($id, array $parameters, $createIfNotExists = false)
+    public function edit($id, array $parameters, $createIfNotExists = false, $timeout = 5)
     {
         $method    = $createIfNotExists ? 'PUT' : 'PATCH';
         $supported = $this->isSupported('edit');
 
-        return (true === $supported) ? $this->makeRequest($this->endpoint.'/'.$id.'/edit', $parameters, $method) : $supported;
+        return (true === $supported) ? $this->makeRequest($this->endpoint.'/'.$id.'/edit', $parameters, $method, $timeout) : $supported;
     }
 
     /**
@@ -527,43 +533,46 @@ class Api implements LoggerAwareInterface
      *
      * @param array $parameters
      * @param bool  $createIfNotExists
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function editBatch(array $parameters, $createIfNotExists = false)
+    public function editBatch(array $parameters, $createIfNotExists = false, $timeout = 5)
     {
         $method    = $createIfNotExists ? 'PUT' : 'PATCH';
         $supported = $this->isSupported('editBatch');
 
-        return (true === $supported) ? $this->makeRequest($this->endpoint.'/batch/edit', $parameters, $method) : $supported;
+        return (true === $supported) ? $this->makeRequest($this->endpoint.'/batch/edit', $parameters, $method, $timeout) : $supported;
     }
 
     /**
      * Delete an item
      *
      * @param $id
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function delete($id)
+    public function delete($id, $timeout = 5)
     {
         $supported = $this->isSupported('delete');
 
-        return (true === $supported) ? $this->makeRequest($this->endpoint.'/'.$id.'/delete', array(), 'DELETE') : $supported;
+        return (true === $supported) ? $this->makeRequest($this->endpoint.'/'.$id.'/delete', array(), 'DELETE', $timeout) : $supported;
     }
 
     /**
      * Delete a batch of items
      *
      * @param $ids
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function deleteBatch(array $ids)
+    public function deleteBatch(array $ids, $timeout = 5)
     {
         $supported = $this->isSupported('deleteBatch');
 
-        return (true === $supported) ? $this->makeRequest($this->endpoint.'/batch/delete', array('ids' => $ids), 'DELETE') : $supported;
+        return (true === $supported) ? $this->makeRequest($this->endpoint.'/batch/delete', array('ids' => $ids), 'DELETE', $timeout) : $supported;
     }
 
     /**
