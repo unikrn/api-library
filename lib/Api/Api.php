@@ -97,11 +97,13 @@ class Api implements LoggerAwareInterface
     /**
      * @param AuthInterface $auth
      * @param string        $baseUrl
+     * @param int           $timeout
      */
-    public function __construct(AuthInterface $auth, $baseUrl = '')
+    public function __construct(AuthInterface $auth, $baseUrl = '', $timeout = null)
     {
         $this->auth = $auth;
         $this->setBaseUrl($baseUrl);
+        $this->auth->setCurlTimeout($timeout);
     }
 
     /**
