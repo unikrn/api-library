@@ -390,7 +390,7 @@ class Api implements LoggerAwareInterface
      *
      * @return array|mixed
      */
-    public function get($id, $timeout = 5)
+    public function get($id, $timeout = null)
     {
         return $this->makeRequest("{$this->endpoint}/$id", [], 'GET', $timeout);
     }
@@ -402,7 +402,7 @@ class Api implements LoggerAwareInterface
      *
      * @return array|bool
      */
-    public function getCustom($id, array $select = array(), $timeout = 5)
+    public function getCustom($id, array $select = array(), $timeout = null)
     {
         $supported = $this->isSupported('get');
 
@@ -423,7 +423,7 @@ class Api implements LoggerAwareInterface
      *
      * @return array|mixed
      */
-    public function getList($search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC', $publishedOnly = false, $minimal = false, $timeout = 5)
+    public function getList($search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC', $publishedOnly = false, $minimal = false, $timeout = null)
     {
         $parameters = array(
             'search'        => $search,
@@ -488,7 +488,7 @@ class Api implements LoggerAwareInterface
      *
      * @return array|mixed
      */
-    public function create(array $parameters, $timeout = 5)
+    public function create(array $parameters, $timeout = null)
     {
         $supported = $this->isSupported('create');
 
@@ -503,7 +503,7 @@ class Api implements LoggerAwareInterface
      *
      * @return array|mixed
      */
-    public function createBatch(array $parameters, $timeout = 5)
+    public function createBatch(array $parameters, $timeout = null)
     {
         $supported = $this->isSupported('createBatch');
 
@@ -520,7 +520,7 @@ class Api implements LoggerAwareInterface
      *
      * @return array|mixed
      */
-    public function edit($id, array $parameters, $createIfNotExists = false, $timeout = 5)
+    public function edit($id, array $parameters, $createIfNotExists = false, $timeout = null)
     {
         $method    = $createIfNotExists ? 'PUT' : 'PATCH';
         $supported = $this->isSupported('edit');
@@ -537,7 +537,7 @@ class Api implements LoggerAwareInterface
      *
      * @return array|mixed
      */
-    public function editBatch(array $parameters, $createIfNotExists = false, $timeout = 5)
+    public function editBatch(array $parameters, $createIfNotExists = false, $timeout = null)
     {
         $method    = $createIfNotExists ? 'PUT' : 'PATCH';
         $supported = $this->isSupported('editBatch');
@@ -553,7 +553,7 @@ class Api implements LoggerAwareInterface
      *
      * @return array|mixed
      */
-    public function delete($id, $timeout = 5)
+    public function delete($id, $timeout = null)
     {
         $supported = $this->isSupported('delete');
 
@@ -568,7 +568,7 @@ class Api implements LoggerAwareInterface
      *
      * @return array|mixed
      */
-    public function deleteBatch(array $ids, $timeout = 5)
+    public function deleteBatch(array $ids, $timeout = null)
     {
         $supported = $this->isSupported('deleteBatch');
 

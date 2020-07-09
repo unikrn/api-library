@@ -43,12 +43,13 @@ class Segments extends Api
      *
      * @param int $segmentId Segment ID
      * @param int $contactId Contact ID
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function addContact($segmentId, $contactId)
+    public function addContact($segmentId, $contactId, $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$segmentId.'/contact/'.$contactId.'/add', array(), 'POST');
+        return $this->makeRequest($this->endpoint.'/'.$segmentId.'/contact/'.$contactId.'/add', array(), 'POST'. $timeout);
     }
 
 
@@ -57,12 +58,13 @@ class Segments extends Api
      * list of contact must be added in ids[] query parameter
      * @param int $segmentId Segment ID
      * @param array $contactIds
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function addContacts($segmentId, $contactIds)
+    public function addContacts($segmentId, $contactIds, $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$segmentId.'/contacts/add', $contactIds, 'POST');
+        return $this->makeRequest($this->endpoint.'/'.$segmentId.'/contacts/add', $contactIds, 'POST', $timeout);
     }
 
     /**
@@ -89,7 +91,7 @@ class Segments extends Api
      *
      * @return array|mixed
      */
-    public function removeContact($segmentId, $contactId, $timeout = 5)
+    public function removeContact($segmentId, $contactId, $timeout = null)
     {
         return $this->makeRequest($this->endpoint.'/'.$segmentId.'/contact/'.$contactId.'/remove', array(), 'POST', $timeout);
     }
