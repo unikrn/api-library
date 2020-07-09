@@ -31,10 +31,13 @@ class Stats extends Api
      * @param string $table
      * @param int    $start
      * @param int    $limit
+     * @param array  $order
+     * @param array  $where
+     * @param int $timeout
      *
      * @return array
      */
-    public function get($table = '', $start = 0, $limit = 0, array $order = [], array $where = [])
+    public function get($table = '', $start = 0, $limit = 0, array $order = array(), array $where = array(), $timeout = null)
     {
         $parameters = [
             'start' => $start,
@@ -45,7 +48,7 @@ class Stats extends Api
 
         $parameters = array_filter($parameters);
 
-        return $this->makeRequest($this->endpoint.'/'.$table, $parameters);
+        return $this->makeRequest($this->endpoint.'/'.$table, $parameters, $timeout);
     }
 
     /**

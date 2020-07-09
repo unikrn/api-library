@@ -54,12 +54,13 @@ class Emails extends Api
      * Send email to the assigned lists.
      *
      * @param int $id
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function send($id)
+    public function send($id, int $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$id.'/send', [], 'POST');
+        return $this->makeRequest($this->endpoint.'/'.$id.'/send', [], 'POST', $timeout);
     }
 
     /**
@@ -67,12 +68,13 @@ class Emails extends Api
      *
      * @param int $id
      * @param int $contactId
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function sendToContact($id, $contactId, $parameters = [])
+    public function sendToContact($id, $contactId, $parameters = array(), $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/'.$contactId.'/send', $parameters, 'POST');
+        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/'.$contactId.'/send', $parameters, 'POST', $timeout);
     }
 
     /**

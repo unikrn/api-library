@@ -48,11 +48,13 @@ class Users extends Api
     /**
      * Get your (API) user.
      *
+     * @param int $timeout
+     *
      * @return array|mixed
      */
-    public function getSelf()
+    public function getSelf($timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/self');
+        return $this->makeRequest($this->endpoint.'/self', [], 'GET', $timeout);
     }
 
     /**
@@ -60,11 +62,12 @@ class Users extends Api
      *
      * @param int          $id
      * @param string|array $permissions
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function checkPermission($id, $permissions)
+    public function checkPermission($id, $permissions, $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$id.'/permissioncheck', ['permissions' => $permissions], 'POST');
+        return $this->makeRequest($this->endpoint.'/'.$id.'/permissioncheck', ['permissions' => $permissions], 'POST', $timeout);
     }
 }

@@ -78,44 +78,51 @@ class Contacts extends Api
      * @param string $orderByDir
      * @param bool   $publishedOnly
      * @param bool   $minimal
+     * @param int   $timeout
      *
      * @return array|mixed
      */
-    public function getIdentified($search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC', $publishedOnly = false, $minimal = false)
+    public function getIdentified($search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC', $publishedOnly = false, $minimal = false, $timeout = null)
     {
         $search = ($search) ? "$search !is:anonymous" : '!is:anonymous';
 
-        return $this->getList($search, $start, $limit, $orderBy, $orderByDir, $publishedOnly, $minimal);
+        return $this->getList($search, $start, $limit, $orderBy, $orderByDir, $publishedOnly, $minimal, $timeout);
     }
 
     /**
      * Get a list of users available as contact owners.
      *
+     * @param int $timeout
+     *
      * @return array|mixed
      */
-    public function getOwners()
+    public function getOwners($timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/list/owners');
+        return $this->makeRequest($this->endpoint.'/list/owners', [], 'GET', $timeout);
     }
 
     /**
      * Get a list of custom fields.
      *
+     * @param int $timeout
+     *
      * @return array|mixed
      */
-    public function getFieldList()
+    public function getFieldList($timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/list/fields');
+        return $this->makeRequest($this->endpoint.'/list/fields', [], 'GET', $timeout);
     }
 
     /**
      * Get a list of contact segments.
      *
+     * @param int $timeout
+     *
      * @return array|mixed
      */
-    public function getSegments()
+    public function getSegments($timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/list/segments');
+        return $this->makeRequest($this->endpoint.'/list/segments', [], 'GET', $timeout);
     }
 
     /**
@@ -157,6 +164,7 @@ class Contacts extends Api
      * @param int       $page
      * @param \DateTime $dateFrom
      * @param \DateTime $dateTo
+     * @param int       $timeout
      *
      * @return array|mixed
      */
@@ -168,9 +176,10 @@ class Contacts extends Api
         $orderByDir = 'ASC',
         $page = 1,
         \DateTime $dateFrom = null,
-        \DateTime $dateTo = null
+        \DateTime $dateTo = null,
+        int $timeout = null
     ) {
-        return $this->fetchActivity('/activity', $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page, $dateFrom, $dateTo);
+        return $this->fetchActivity('/activity', $search, $includeEvents, $excludeEvents, $orderBy, $orderByDir, $page, $dateFrom, $dateTo, $timeout);
     }
 
     /**
@@ -232,10 +241,11 @@ class Contacts extends Api
      * @param int    $limit
      * @param string $orderBy
      * @param string $orderByDir
+     * @param int   $timeout
      *
      * @return array|mixed
      */
-    public function getContactNotes($id, $search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC')
+    public function getContactNotes($id, $search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC', $timeout = null)
     {
         $parameters = [
             'search'     => $search,
@@ -247,7 +257,7 @@ class Contacts extends Api
 
         $parameters = array_filter($parameters);
 
-        return $this->makeRequest($this->endpoint.'/'.$id.'/notes', $parameters);
+        return $this->makeRequest($this->endpoint.'/'.$id.'/notes', $parameters, 'GET', $timeout);
     }
 
     /**
@@ -259,10 +269,11 @@ class Contacts extends Api
      * @param int    $limit
      * @param string $orderBy
      * @param string $orderByDir
+     * @param int   $timeout
      *
      * @return array|mixed
      */
-    public function getContactDevices($id, $search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC')
+    public function getContactDevices($id, $search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC', $timeout = null)
     {
         $parameters = [
             'search'     => $search,
@@ -274,43 +285,46 @@ class Contacts extends Api
 
         $parameters = array_filter($parameters);
 
-        return $this->makeRequest($this->endpoint.'/'.$id.'/devices', $parameters);
+        return $this->makeRequest($this->endpoint.'/'.$id.'/devices', $parameters, 'GET', $timeout);
     }
 
     /**
      * Get a list of smart segments the contact is in.
      *
      * @param $id
+     * @param int   $timeout
      *
      * @return array|mixed
      */
-    public function getContactSegments($id)
+    public function getContactSegments($id, $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$id.'/segments');
+        return $this->makeRequest($this->endpoint.'/'.$id.'/segments', [], 'GET', $timeout);
     }
 
     /**
      * Get a list of companies the contact is in.
      *
      * @param $id
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function getContactCompanies($id)
+    public function getContactCompanies($id, $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$id.'/companies');
+        return $this->makeRequest($this->endpoint.'/'.$id.'/companies', [], 'GET', $timeout);
     }
 
     /**
      * Get a list of campaigns the contact is in.
      *
      * @param $id
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function getContactCampaigns($id)
+    public function getContactCampaigns($id, $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$id.'/campaigns');
+        return $this->makeRequest($this->endpoint.'/'.$id.'/campaigns', [], 'GET', $timeout);
     }
 
     /**
@@ -319,12 +333,13 @@ class Contacts extends Api
      * @param int   $id
      * @param int   $points
      * @param array $parameters 'eventName' and 'actionName'
+     * @param int   $timeout
      *
      * @return mixed
      */
-    public function addPoints($id, $points, array $parameters = [])
+    public function addPoints($id, $points, array $parameters = array(), $timeout = null)
     {
-        return $this->makeRequest('contacts/'.$id.'/points/plus/'.$points, $parameters, 'POST');
+        return $this->makeRequest('contacts/'.$id.'/points/plus/'.$points, $parameters, 'POST', $timeout);
     }
 
     /**
@@ -333,12 +348,13 @@ class Contacts extends Api
      * @param int   $id
      * @param int   $points
      * @param array $parameters 'eventName' and 'actionName'
+     * @param int   $timeout
      *
      * @return mixed
      */
-    public function subtractPoints($id, $points, array $parameters = [])
+    public function subtractPoints($id, $points, array $parameters = array(), $timeout = null)
     {
-        return $this->makeRequest('contacts/'.$id.'/points/minus/'.$points, $parameters, 'POST');
+        return $this->makeRequest('contacts/'.$id.'/points/minus/'.$points, $parameters, 'POST', $timeout);
     }
 
     /**
@@ -349,10 +365,11 @@ class Contacts extends Api
      * @param int    $reason
      * @param null   $channelId
      * @param string $comments
+     * @param int   $timeout
      *
      * @return array|mixed
      */
-    public function addDnc($id, $channel = 'email', $reason = Contacts::MANUAL, $channelId = null, $comments = 'via API')
+    public function addDnc($id, $channel = 'email', $reason = Contacts::MANUAL, $channelId = null, $comments = 'via API', $timeout = null)
     {
         return $this->makeRequest(
             'contacts/'.$id.'/dnc/'.$channel.'/add',
@@ -361,7 +378,8 @@ class Contacts extends Api
                 'channelId' => $channelId,
                 'comments'  => $comments,
             ],
-            'POST'
+            'POST',
+            $timeout
         );
     }
 
@@ -370,15 +388,17 @@ class Contacts extends Api
      *
      * @param int    $id
      * @param string $channel
+     * @param int   $timeout
      *
      * @return mixed
      */
-    public function removeDnc($id, $channel = 'email')
+    public function removeDnc($id, $channel = 'email', $timeout = null)
     {
         return $this->makeRequest(
             'contacts/'.$id.'/dnc/'.$channel.'/remove',
             [],
-            'POST'
+            'POST',
+            $timeout
         );
     }
 
@@ -387,15 +407,17 @@ class Contacts extends Api
      *
      * @param int   $id
      * @param array $utmTags
+     * @param int    $timeout
      *
      * @return mixed
      */
-    public function addUtm($id, $utmTags)
+    public function addUtm($id, $utmTags, int $timeout = null)
     {
         return $this->makeRequest(
             'contacts/'.$id.'/utm/add',
             $utmTags,
-            'POST'
+            'POST',
+            $timeout
         );
     }
 
@@ -404,15 +426,17 @@ class Contacts extends Api
      *
      * @param int $id
      * @param int $utmId
+     * @param int    $timeout
      *
      * @return mixed
      */
-    public function removeUtm($id, $utmId)
+    public function removeUtm($id, $utmId, int $timeout = null)
     {
         return $this->makeRequest(
             'contacts/'.$id.'/utm/'.$utmId.'/remove',
             [],
-            'POST'
+            'POST',
+            $timeout
         );
     }
 
