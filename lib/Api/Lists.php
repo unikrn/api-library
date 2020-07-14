@@ -27,12 +27,13 @@ class Lists extends Segments
      *
      * @param int $id     List ID
      * @param int $leadId Lead ID
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function addLead($id, $leadId)
+    public function addLead($id, $leadId, int $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/add/'.$leadId, array(), 'POST');
+        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/add/'.$leadId, array(), 'POST', $timeout);
     }
 
 
@@ -41,11 +42,12 @@ class Lists extends Segments
      *
      * @param int $id     List ID
      * @param int $leadId Lead ID
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function removeLead($id, $leadId)
+    public function removeLead($id, $leadId, $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/remove/'.$leadId, array(), 'POST');
+        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/remove/'.$leadId, array(), 'POST', $timeout);
     }
 }

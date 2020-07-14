@@ -47,10 +47,11 @@ class CampaignEvents extends Api
      * @param int    $limit
      * @param string $orderBy
      * @param string $orderByDir
+     * @param int   $timeout
      *
      * @return array|mixed
      */
-    public function getContactEvents($contactId, $search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC')
+    public function getContactEvents($contactId, $search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC', $timeout = null)
     {
         $parameters = array(
             'search'        => $search,
@@ -62,7 +63,7 @@ class CampaignEvents extends Api
 
         $parameters = array_filter($parameters);
 
-        return $this->makeRequest($this->endpoint.'/contact/'.$contactId, $parameters);
+        return $this->makeRequest($this->endpoint.'/contact/'.$contactId, $parameters, 'GET', $timeout);
     }
 
     /**
@@ -75,10 +76,11 @@ class CampaignEvents extends Api
      * @param int    $limit
      * @param string $orderBy
      * @param string $orderByDir
+     * @param int    $timeout
      *
      * @return array|mixed
      */
-    public function getContactCampaignEvents($campaignId, $contactId, $search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC')
+    public function getContactCampaignEvents($campaignId, $contactId, $search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC', $timeout = null)
     {
         $parameters = array(
             'search'        => $search,
@@ -90,7 +92,7 @@ class CampaignEvents extends Api
 
         $parameters = array_filter($parameters);
 
-        return $this->makeRequest('campaigns/'.$campaignId.'/events/contact/'.$contactId, $parameters);
+        return $this->makeRequest('campaigns/'.$campaignId.'/events/contact/'.$contactId, $parameters, 'GET', $timeout);
     }
 
     /**
@@ -99,23 +101,25 @@ class CampaignEvents extends Api
      * @param $contactId
      * @param $eventId
      * @param $parameters
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function editContactEvent($contactId, $eventId, array $parameters)
+    public function editContactEvent($contactId, $eventId, array $parameters, $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$eventId.'/contact/'.$contactId.'/edit', $parameters, 'PUT');
+        return $this->makeRequest($this->endpoint.'/'.$eventId.'/contact/'.$contactId.'/edit', $parameters, 'PUT', $timeout);
     }
 
     /**
      * Edit or schedule multiple events
      *
      * @param array $parameters
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function editEvents(array $parameters)
+    public function editEvents(array $parameters, $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/batch/edit', $parameters, 'PUT');
+        return $this->makeRequest($this->endpoint.'/batch/edit', $parameters, 'PUT', $timeout);
     }
 }
