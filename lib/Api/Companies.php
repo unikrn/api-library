@@ -51,12 +51,13 @@ class Companies extends Api
      *
      * @param int $id        Company ID
      * @param int $contactId Contact ID
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function addContact($id, $contactId)
+    public function addContact($id, $contactId, $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/'.$contactId.'/add', array(), 'POST');
+        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/'.$contactId.'/add', array(), 'POST', $timeout);
     }
 
     /**
@@ -64,11 +65,12 @@ class Companies extends Api
      *
      * @param int $id        Company ID
      * @param int $contactId Contact ID
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function removeContact($id, $contactId)
+    public function removeContact($id, $contactId, $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/'.$contactId.'/remove', array(), 'POST');
+        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/'.$contactId.'/remove', array(), 'POST', $timeout);
     }
 }

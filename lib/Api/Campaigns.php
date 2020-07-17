@@ -57,12 +57,13 @@ class Campaigns extends Api
      *
      * @param int $id     Campaign ID
      * @param int $leadId Lead ID
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function addLead($id, $leadId)
+    public function addLead($id, $leadId, $timeout = null)
     {
-        return $this->addContact($id, $leadId);
+        return $this->addContact($id, $leadId, $timeout);
     }
 
     /**
@@ -70,12 +71,13 @@ class Campaigns extends Api
      *
      * @param int $id        Campaign ID
      * @param int $contactId Contact ID
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function addContact($id, $contactId)
+    public function addContact($id, $contactId, $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/'.$contactId.'/add', array(), 'POST');
+        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/'.$contactId.'/add', array(), 'POST', $timeout);
     }
 
     /**
@@ -85,12 +87,13 @@ class Campaigns extends Api
      *
      * @param int $id     Campaign ID
      * @param int $leadId Lead ID
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function removeLead($id, $leadId)
+    public function removeLead($id, $leadId, $timeout = null)
     {
-        return $this->removeContact($id, $leadId);
+        return $this->removeContact($id, $leadId, $timeout);
     }
 
     /**
@@ -98,12 +101,13 @@ class Campaigns extends Api
      *
      * @param int $id        Campaign ID
      * @param int $contactId Contact ID
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function removeContact($id, $contactId)
+    public function removeContact($id, $contactId, $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/'.$contactId.'/remove', array(), 'POST');
+        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/'.$contactId.'/remove', array(), 'POST', $timeout);
     }
 
     /**
@@ -114,10 +118,11 @@ class Campaigns extends Api
      * @param int    $limit
      * @param array  $order
      * @param array  $where
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function getContacts($id, $start = 0, $limit = 0, array $order = array(), array $where = array())
+    public function getContacts($id, $start = 0, $limit = 0, array $order = array(), array $where = array(), $timeout = null)
     {
         $parameters = array();
         $args = array('start', 'limit', 'order', 'where');
@@ -128,18 +133,19 @@ class Campaigns extends Api
             }
         }
 
-        return $this->makeRequest($this->endpoint.'/'.$id.'/contacts', $parameters);
+        return $this->makeRequest($this->endpoint.'/'.$id.'/contacts', $parameters, $timeout);
     }
     
     /**
      * Clone an Existing campaign
      *
      * @param int $id        Campaign ID
+     * @param int $timeout
      *
      * @return array|mixed
      */
-    public function cloneCampaign($id)
+    public function cloneCampaign($id, $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/clone/'.$id, array(), 'POST');
+        return $this->makeRequest($this->endpoint.'/clone/'.$id, array(), 'POST', $timeout);
     }
 }
