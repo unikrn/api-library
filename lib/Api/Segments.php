@@ -57,6 +57,7 @@ class Segments extends Api
      * list of contact must be added in ids[] query parameter
      * @param int $segmentId Segment ID
      * @param array $contactIds
+     * @param int $timeout
      *
      * @return array|mixed
      */
@@ -106,5 +107,15 @@ class Segments extends Api
     public function removeLead($id, $leadId)
     {
         return $this->removeContact($id, $leadId);
+    }
+
+    /**
+     * Returns an array of all segments and the number of leads per segment
+     *
+     * @param null|integer $mincount    Minimum number of leads a segment must contain to be included in the result
+     * @return array|mixed
+     */
+    public function getLeadCounts($mincount = null){
+        return $this->makeRequest($this->endpoint.'/leadcounts', ['mincount' => $mincount], 'GET');
     }
 }
