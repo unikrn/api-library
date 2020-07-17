@@ -58,7 +58,7 @@ class Segments extends Api
      *
      * @param int   $segmentId  Segment ID
      * @param array $contactIds
-     * @param int $timeout
+     * @param int $timeout      
      *
      * @return array|mixed
      */
@@ -118,6 +118,6 @@ class Segments extends Api
      * @return array|mixed
      */
     public function getLeadCounts($mincount = null){
-        return $this->makeRequest($this->endpoint.'/leadcounts', ['mincount' => $mincount], 'POST');
+        return $this->makeRequest($this->endpoint.'/leadcounts', ['mincount' => $mincount], 'GET');
     }
 }
