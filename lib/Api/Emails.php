@@ -1,20 +1,20 @@
 <?php
 /**
- * @package     Mautic
  * @copyright   2014 Mautic, NP. All rights reserved.
  * @author      Mautic
- * @link        http://mautic.org
+ *
+ * @see        http://mautic.org
+ *
  * @license     MIT http://opensource.org/licenses/MIT
  */
 
 namespace Mautic\Api;
 
 /**
- * Emails Context
+ * Emails Context.
  */
 class Emails extends Api
 {
-
     /**
      * {@inheritdoc}
      */
@@ -33,14 +33,14 @@ class Emails extends Api
     /**
      * @var array
      */
-    protected $bcRegexEndpoints = array(
+    protected $bcRegexEndpoints = [
         'emails/(.*?)/contact/(.*?)/send' => 'emails/$1/send/contact/$2', // 2.6.0
-    );
+    ];
 
     /**
      * {@inheritdoc}
      */
-    protected $searchCommands = array(
+    protected $searchCommands = [
         'ids',
         'is:published',
         'is:unpublished',
@@ -48,11 +48,10 @@ class Emails extends Api
         'is:uncategorized',
         'category',
         'lang',
-    );
-
+    ];
 
     /**
-     * Send email to the assigned lists
+     * Send email to the assigned lists.
      *
      * @param int $id
      * @param int $timeout
@@ -61,11 +60,11 @@ class Emails extends Api
      */
     public function send($id, int $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$id.'/send', array(), 'POST', $timeout);
+        return $this->makeRequest($this->endpoint.'/'.$id.'/send', [], 'POST', $timeout);
     }
 
     /**
-     * Send email to a specific contact
+     * Send email to a specific contact.
      *
      * @param int $id
      * @param int $contactId
@@ -79,7 +78,7 @@ class Emails extends Api
     }
 
     /**
-     * Send email to a specific lead
+     * Send email to a specific lead.
      *
      * @deprecated use sendToContact instead
      *

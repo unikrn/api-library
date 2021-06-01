@@ -1,20 +1,20 @@
 <?php
 /**
- * @package     Mautic
  * @copyright   2014 Mautic, NP. All rights reserved.
  * @author      Mautic
- * @link        http://mautic.org
+ *
+ * @see        http://mautic.org
+ *
  * @license     MIT http://opensource.org/licenses/MIT
  */
 
 namespace Mautic\Api;
 
 /**
- * Segments Context
+ * Segments Context.
  */
 class Segments extends Api
 {
-
     /**
      * {@inheritdoc}
      */
@@ -33,13 +33,13 @@ class Segments extends Api
     /**
      * @var array
      */
-    protected $bcRegexEndpoints = array(
+    protected $bcRegexEndpoints = [
         'segments/(.*?)/contact/(.*?)/add'    => 'segments/$1/contact/add/$2', // 2.6.0
         'segments/(.*?)/contact/(.*?)/remove' => 'segments/$1/contact/remove/$2', // 2.6.0
-    );
+    ];
 
     /**
-     * Add a contact to the segment
+     * Add a contact to the segment.
      *
      * @param int $segmentId Segment ID
      * @param int $contactId Contact ID
@@ -49,16 +49,16 @@ class Segments extends Api
      */
     public function addContact($segmentId, $contactId, $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$segmentId.'/contact/'.$contactId.'/add', array(), 'POST'. $timeout);
+        return $this->makeRequest($this->endpoint.'/'.$segmentId.'/contact/'.$contactId.'/add', [], 'POST'. $timeout);
     }
-
 
     /**
      * Add a contact list of ids to the segment
-     * list of contact must be added in ids[] query parameter
-     * @param int $segmentId Segment ID
+     * list of contact must be added in ids[] query parameter.
+     *
+     * @param int   $segmentId  Segment ID
      * @param array $contactIds
-     * @param int $timeout
+     * @param int $timeout      
      *
      * @return array|mixed
      */
@@ -68,7 +68,7 @@ class Segments extends Api
     }
 
     /**
-     * Add a lead to the segment
+     * Add a lead to the segment.
      *
      * @deprecated 2.0.1, use addContact() instead
      *
@@ -83,7 +83,7 @@ class Segments extends Api
     }
 
     /**
-     * Remove a contact from the segment
+     * Remove a contact from the segment.
      *
      * @param int $segmentId Segment ID
      * @param int $contactId Contact ID
@@ -93,11 +93,11 @@ class Segments extends Api
      */
     public function removeContact($segmentId, $contactId, $timeout = null)
     {
-        return $this->makeRequest($this->endpoint.'/'.$segmentId.'/contact/'.$contactId.'/remove', array(), 'POST', $timeout);
+        return $this->makeRequest($this->endpoint.'/'.$segmentId.'/contact/'.$contactId.'/remove', [], 'POST', $timeout);
     }
 
     /**
-     * Remove a lead from the segment
+     * Remove a lead from the segment.
      *
      * @deprecated 2.0.1, use addContact() instead
      *
@@ -109,5 +109,15 @@ class Segments extends Api
     public function removeLead($id, $leadId)
     {
         return $this->removeContact($id, $leadId);
+    }
+
+    /**
+     * Returns an array of all segments and the number of leads per segment
+     *
+     * @param null|integer $mincount    Minimum number of leads a segment must contain to be included in the result
+     * @return array|mixed
+     */
+    public function getLeadCounts($mincount = null){
+        return $this->makeRequest($this->endpoint.'/leadcounts', ['mincount' => $mincount], 'GET');
     }
 }

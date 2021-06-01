@@ -1,88 +1,89 @@
 <?php
 /**
- * @package     Mautic
  * @copyright   2014 Mautic, NP. All rights reserved.
  * @author      Mautic
- * @link        http://mautic.org
+ *
+ * @see        http://mautic.org
+ *
  * @license     MIT http://opensource.org/licenses/MIT
  */
 
 namespace Mautic\Api;
 
-use Mautic\QueryBuilder\QueryBuilder;
 use Mautic\Auth\ApiAuth;
 use Mautic\Auth\AuthInterface;
+use Mautic\QueryBuilder\QueryBuilder;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 /**
- * Base API class
+ * Base API class.
  */
 class Api implements LoggerAwareInterface
 {
     /**
-     * Used by unit testing to force use of BC endpoints
+     * Used by unit testing to force use of BC endpoints.
      *
      * @var bool
      */
     public $bcTesting = false;
 
     /**
-     * Common endpoint for this API
+     * Common endpoint for this API.
      *
      * @var string
      */
     protected $endpoint;
 
     /**
-     * Name of the array element where the list of items is
+     * Name of the array element where the list of items is.
      *
      * @var string
      */
     protected $listName;
 
     /**
-     * Name of the array element where the item data is
+     * Name of the array element where the item data is.
      *
      * @var string
      */
     protected $itemName;
 
     /**
-     * Array of default endpoints supported by the context; if empty, all are supported
+     * Array of default endpoints supported by the context; if empty, all are supported.
      *
      * @var array
      */
-    protected $endpointsSupported = array();
+    protected $endpointsSupported = [];
 
     /**
-     * Array of deprecated endpoints to use if a response fails as a 404 with a previous version of Mautic
+     * Array of deprecated endpoints to use if a response fails as a 404 with a previous version of Mautic.
      *
      * @var array
      */
-    protected $bcRegexEndpoints = array();
+    protected $bcRegexEndpoints = [];
 
     /**
-     * Prevents from checking BC on a BC request
+     * Prevents from checking BC on a BC request.
      *
      * @var bool
      */
     protected $bcAttempt = false;
 
     /**
-     * Base URL for API endpoints
+     * Base URL for API endpoints.
      *
      * @var string
      */
     protected $baseUrl;
 
     /**
-     * Array of available search commands
+     * Array of available search commands.
      *
      * @var array
      */
-    protected $searchCommands = array();
+    protected $searchCommands = [];
 
     /**
      * @var ApiAuth
@@ -95,8 +96,7 @@ class Api implements LoggerAwareInterface
     private $logger;
 
     /**
-     * @param AuthInterface $auth
-     * @param string        $baseUrl
+     * @param string $baseUrl
      * @param int           $timeout
      */
     public function __construct(AuthInterface $auth, $baseUrl = '', $timeout = null)
@@ -124,8 +124,6 @@ class Api implements LoggerAwareInterface
     /**
      * Sets a logger.
      *
-     * @param LoggerInterface $logger
-     *
      * @return $this
      */
     public function setLogger(LoggerInterface $logger)
@@ -136,7 +134,7 @@ class Api implements LoggerAwareInterface
     }
 
     /**
-     * Get the array of available search commands
+     * Get the array of available search commands.
      *
      * @return array
      */
@@ -146,11 +144,11 @@ class Api implements LoggerAwareInterface
     }
 
     /**
-     * Check if the search command is available
+     * Check if the search command is available.
      *
      * @param string $command
      *
-     * @return boolean
+     * @return bool
      */
     public function hasSearchCommand($command)
     {
@@ -158,7 +156,7 @@ class Api implements LoggerAwareInterface
     }
 
     /**
-     * Returns list name
+     * Returns list name.
      *
      * @return string
      */
@@ -168,7 +166,7 @@ class Api implements LoggerAwareInterface
     }
 
     /**
-     * Returns item name
+     * Returns item name.
      *
      * @return string
      */
@@ -178,7 +176,7 @@ class Api implements LoggerAwareInterface
     }
 
     /**
-     * Set the base URL for API endpoints
+     * Set the base URL for API endpoints.
      *
      * @param string $url
      *
@@ -186,11 +184,11 @@ class Api implements LoggerAwareInterface
      */
     public function setBaseUrl($url)
     {
-        if (substr($url, -1) != '/') {
+        if ('/' != substr($url, -1)) {
             $url .= '/';
         }
 
-        if (substr($url,-4,4) != 'api/') {
+        if ('api/' != substr($url, -4, 4)) {
             $url .= 'api/';
         }
 
@@ -200,19 +198,19 @@ class Api implements LoggerAwareInterface
     }
 
     /**
-     * Make the API request
+     * Make the API request.
      *
      * @param        $endpoint
-     * @param array  $parameters
      * @param string $method
      * @param int    $timeout
      *
      * @return array
+     *
      * @throws \Exception
      */
-    public function makeRequest($endpoint, array $parameters = array(), $method = 'GET', $timeout = null)
+    public function makeRequest($endpoint, array $parameters = [], $method = 'GET', $timeout = null)
     {
-        $response = array();
+        $response = [];
 
         // Validate if this endpoint has a BC url
         $bcEndpoint = null;
@@ -221,7 +219,7 @@ class Api implements LoggerAwareInterface
                 foreach ($this->bcRegexEndpoints as $regex => $bc) {
                     if (preg_match('@'.$regex.'@', $endpoint)) {
                         $this->bcAttempt = true;
-                        $bcEndpoint = preg_replace('@'.$regex.'@', $bc, $endpoint);
+                        $bcEndpoint      = preg_replace('@'.$regex.'@', $bc, $endpoint);
 
                         break;
                     }
@@ -229,7 +227,7 @@ class Api implements LoggerAwareInterface
             }
         }
 
-        $url = $this->baseUrl.$endpoint;
+        $url      = $this->baseUrl.$endpoint;
 
         // Don't make the call if we're unit testing a BC endpoint
         if (!$bcEndpoint || !$this->bcTesting || ($bcEndpoint && $this->bcTesting && $this->bcAttempt)) {
@@ -237,7 +235,7 @@ class Api implements LoggerAwareInterface
             if ($this->bcTesting && !$this->bcAttempt) {
                 $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
                 if (!is_array($this->bcTesting)) {
-                    $this->bcTesting = array($this->bcTesting);
+                    $this->bcTesting = [$this->bcTesting];
                 }
 
                 // The method is not catching the BC endpoint so fail the test
@@ -247,14 +245,14 @@ class Api implements LoggerAwareInterface
             }
             $this->bcAttempt = false;
 
-            if (strpos($url, 'http') === false) {
-                $error = array(
-                    'code'    => 500,
-                    'message' => sprintf(
-                        'URL is incomplete.  Please use %s, set the base URL as the third argument to $MauticApi->newApi(), or make $endpoint a complete URL.',
-                        __CLASS__.'setBaseUrl()'
-                    )
-                );
+            if (false === strpos($url, 'http')) {
+                $error = [
+                'code'    => 500,
+                'message' => sprintf(
+                    'URL is incomplete.  Please use %s, set the base URL as the third argument to $MauticApi->newApi(), or make $endpoint a complete URL.',
+                    __CLASS__.'setBaseUrl()'
+                ),
+            ];
             } else {
                 try {
                     $settings = [];
@@ -265,65 +263,33 @@ class Api implements LoggerAwareInterface
                         $this->auth->setCurlTimeout((int)$timeout);
                     $response = $this->auth->makeRequest($url, $parameters, $method, $settings);
 
-                    $this->getLogger()->debug('API Response', array('response' => $response));
+                    $this->getLogger()->debug('API Response', ['response' => $response]);
 
                     if (!is_array($response)) {
                         $this->getLogger()->warning($response);
 
                         //assume an error
-                        $error = array(
-                            'code'    => 500,
-                            'message' => $response
-                        );
-                    }
-
-                    // @deprecated support for 2.6.0 to be removed in 3.0
-                    if (!isset($response['errors']) && isset($response['error']) && isset($response['error_description'])) {
-                        $message = $response['error'].': '.$response['error_description'];
-
-                        $this->getLogger()->warning($message);
-
-                        $error = array(
-                            'code'    => 403,
-                            'message' => $message
-                        );
+                        $error = [
+                        'code'    => 500,
+                        'message' => $response,
+                    ];
                     }
                 } catch (\Exception $e) {
-                    $this->getLogger()->error('Failed connecting to Mautic API: '.$e->getMessage(), array('trace' => $e->getTraceAsString()));
+                    $this->getLogger()->error('Failed connecting to Mautic API: '.$e->getMessage(), ['trace' => $e->getTraceAsString()]);
 
-                    $error = array(
-                        'code'    => $e->getCode(),
-                        'message' => $e->getMessage()
-                    );
+                    $error = [
+                    'code'    => $e->getCode(),
+                    'message' => $e->getMessage(),
+                ];
                 }
             }
 
             if (!empty($error)) {
-                return array(
-                    'errors' => array($error),
-                    // @deprecated 2.6.0 to be removed 3.0
-                    'error'  => $error
-                );
+                return [
+                'errors' => [$error],
+            ];
             } elseif (!empty($response['errors'])) {
                 $this->getLogger()->error('Mautic API returned errors: '.var_export($response['errors'], true));
-            }
-
-            // @deprecated 2.6.0 BC error handling
-            // @todo remove in 3.0
-            if (isset($response['error']) && !isset($response['errors'])) {
-                if (isset($response['error_description'])) {
-                    // BC Oauth2 error
-                    $response['errors'] = array(
-                        array(
-                            'message' => $response['error_description'],
-                            'type'    => $response['error']
-                        )
-                    );
-                } elseif (isset($response['message'])) {
-                    $response['errors'] = array(
-                        $response['error']
-                    );
-                }
             }
 
             // Ensure a code is present in the error array
@@ -338,7 +304,7 @@ class Api implements LoggerAwareInterface
         }
 
         // Check for a 404 code and a BC URL then try again if applicable
-        if ($bcEndpoint && ($this->bcTesting || (!empty($response['errors'][0]['code']) && (int) $response['errors'][0]['code'] === 404))) {
+        if ($bcEndpoint && ($this->bcTesting || (!empty($response['errors'][0]['code']) && 404 === (int) $response['errors'][0]['code']))) {
             $this->bcAttempt = true;
 
             return $this->makeRequest($bcEndpoint, $parameters, $method);
@@ -348,7 +314,7 @@ class Api implements LoggerAwareInterface
     }
 
     /**
-     * Returns HTTP response info
+     * Returns HTTP response info.
      *
      * @return array
      */
@@ -358,7 +324,7 @@ class Api implements LoggerAwareInterface
     }
 
     /**
-     * Returns HTTP response headers
+     * Returns HTTP response headers.
      *
      * @return array
      */
@@ -369,7 +335,7 @@ class Api implements LoggerAwareInterface
 
     /**
      * Returns Mautic version from the HTTP response headers
-     * (the header exists since Mautic 2.4.0)
+     * (the header exists since Mautic 2.4.0).
      *
      * @return string|null if not known
      */
@@ -385,7 +351,7 @@ class Api implements LoggerAwareInterface
     }
 
     /**
-     * Get a single item
+     * Get a single item.
      *
      * @param int $id
      * @param int $timeout
@@ -412,7 +378,7 @@ class Api implements LoggerAwareInterface
     }
 
     /**
-     * Get a list of items
+     * Get a list of items.
      *
      * @param string $search
      * @param int    $start
@@ -427,15 +393,15 @@ class Api implements LoggerAwareInterface
      */
     public function getList($search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC', $publishedOnly = false, $minimal = false, $timeout = null)
     {
-        $parameters = array(
+        $parameters = [
             'search'        => $search,
             'start'         => $start,
             'limit'         => $limit,
             'orderBy'       => $orderBy,
             'orderByDir'    => $orderByDir,
             'publishedOnly' => $publishedOnly,
-            'minimal'       => $minimal
-        );
+            'minimal'       => $minimal,
+        ];
 
         $parameters = array_filter($parameters);
 
@@ -443,21 +409,20 @@ class Api implements LoggerAwareInterface
     }
 
     /**
-     * @param QueryBuilder $queryBuilder
-     * @param int          $start
-     * @param int          $limit
+     * @param int $start
+     * @param int $limit
      *
      * @return array|bool
      */
     public function getCustomList(QueryBuilder $queryBuilder, $start = 0, $limit = 0)
     {
-        $parameters = array(
+        $parameters = [
             'select' => $queryBuilder->getSelect(),
             'where'  => $queryBuilder->getWhere(),
             'order'  => $queryBuilder->getOrder(),
             'start'  => $start,
             'limit'  => $limit,
-        );
+        ];
 
         $parameters = array_filter($parameters);
 
@@ -467,7 +432,7 @@ class Api implements LoggerAwareInterface
     }
 
     /**
-     * Proxy function to getList with $publishedOnly set to true
+     * Proxy function to getList with $publishedOnly set to true.
      *
      * @param string $search
      * @param int    $start
@@ -513,11 +478,10 @@ class Api implements LoggerAwareInterface
     }
 
     /**
-     * Edit an item with option to create if it doesn't exist
+     * Edit an item with option to create if it doesn't exist.
      *
-     * @param int   $id
-     * @param array $parameters
-     * @param bool  $createIfNotExists = false
+     * @param int  $id
+     * @param bool $createIfNotExists = false
      * @param int $timeout
      *
      * @return array|mixed
@@ -531,10 +495,9 @@ class Api implements LoggerAwareInterface
     }
 
     /**
-     * Edit a batch of items
+     * Edit a batch of items.
      *
-     * @param array $parameters
-     * @param bool  $createIfNotExists
+     * @param bool $createIfNotExists
      * @param int $timeout
      *
      * @return array|mixed
@@ -548,7 +511,7 @@ class Api implements LoggerAwareInterface
     }
 
     /**
-     * Delete an item
+     * Delete an item.
      *
      * @param $id
      * @param int $timeout
@@ -559,11 +522,11 @@ class Api implements LoggerAwareInterface
     {
         $supported = $this->isSupported('delete');
 
-        return (true === $supported) ? $this->makeRequest($this->endpoint.'/'.$id.'/delete', array(), 'DELETE', $timeout) : $supported;
+        return (true === $supported) ? $this->makeRequest($this->endpoint.'/'.$id.'/delete', [], 'DELETE', $timeout) : $supported;
     }
 
     /**
-     * Delete a batch of items
+     * Delete a batch of items.
      *
      * @param $ids
      * @param int $timeout
@@ -574,11 +537,11 @@ class Api implements LoggerAwareInterface
     {
         $supported = $this->isSupported('deleteBatch');
 
-        return (true === $supported) ? $this->makeRequest($this->endpoint.'/batch/delete', array('ids' => $ids), 'DELETE', $timeout) : $supported;
+        return (true === $supported) ? $this->makeRequest($this->endpoint.'/batch/delete', ['ids' => $ids], 'DELETE', $timeout) : $supported;
     }
 
     /**
-     * Returns a not supported error
+     * Returns a not supported error.
      *
      * @param string $action
      *
@@ -586,22 +549,18 @@ class Api implements LoggerAwareInterface
      */
     protected function actionNotSupported($action)
     {
-        $error = array(
-            'code'    => 500,
-            'message' => "$action is not supported at this time."
-        );
-
-        return array(
-            'errors' => array(
-                $error
-            ),
-            // @deprecated 2.6.0 to be removed in 3.0
-            'error'  => $error
-        );
+        return [
+            'errors' => [
+                [
+                    'code'    => 500,
+                    'message' => "$action is not supported at this time.",
+                ],
+            ],
+        ];
     }
 
     /**
-     * Verify that a default endpoint is supported by the API
+     * Verify that a default endpoint is supported by the API.
      *
      * @param $action
      *
