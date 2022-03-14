@@ -18,7 +18,7 @@
     "ext-curl": "*",
     "ext-json": "*",
     "psr/log": "~1.0",
-    "phpunit/phpunit": "~4.8|~5.0"
+    "phpunit/phpunit": "~4.8|~5.0|7.*|8.*"
   },
   "require-dev": {
     "raveren/kint": "~0.9",
