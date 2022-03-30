@@ -44,27 +44,29 @@ class Files extends Api
     /**
      * {@inheritdoc}
      */
-    public function edit($id, array $parameters, $createIfNotExists = false)
+    public function edit($id, array $parameters, $createIfNotExists = false, $timeout = null)
     {
         return $this->actionNotSupported('edit');
     }
 
     /**
-     * @return array|mixed
+     * @param array $parameters
+     * @param int|null $timeout
+     * @return array|\array[][]|bool|mixed
      */
-    public function create(array $parameters)
+    public function create(array $parameters, $timeout = null)
     {
         if (!isset($parameters['file'])) {
             throw new \InvalidArgumentException('file must be set in parameters');
         }
 
-        return parent::create($parameters);
+        return parent::create($parameters, $timeout);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createBatch(array $parameters)
+    public function createBatch(array $parameters, $timeout = null)
     {
         return $this->actionNotSupported('createBatch');
     }
@@ -72,7 +74,7 @@ class Files extends Api
     /**
      * {@inheritdoc}
      */
-    public function editBatch(array $parameters, $createIfNotExists = false)
+    public function editBatch(array $parameters, $createIfNotExists = false, $timeout = null)
     {
         return $this->actionNotSupported('editBatch');
     }
@@ -80,7 +82,7 @@ class Files extends Api
     /**
      * {@inheritdoc}
      */
-    public function deleteBatch(array $ids)
+    public function deleteBatch(array $ids, $timeout = null)
     {
         return $this->actionNotSupported('deleteBatch');
     }
