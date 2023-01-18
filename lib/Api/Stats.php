@@ -62,7 +62,7 @@ class Stats extends Api
     /**
      * {@inheritdoc}
      */
-    public function getList($search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC', $publishedOnly = false, $minimal = false)
+    public function getList($search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC', $publishedOnly = false, $minimal = false, $timeout = null)
     {
         return $this->actionNotSupported('getList');
     }
