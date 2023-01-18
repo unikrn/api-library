@@ -54,7 +54,7 @@ class Stats extends Api
     /**
      * {@inheritdoc}
      */
-    public function delete($id)
+    public function delete($id, $timeout = null)
     {
         return $this->actionNotSupported('delete');
     }
@@ -70,7 +70,7 @@ class Stats extends Api
     /**
      * {@inheritdoc}
      */
-    public function create(array $parameters)
+    public function create(array $parameters, $timeout = null)
     {
         return $this->actionNotSupported('create');
     }
@@ -86,7 +86,7 @@ class Stats extends Api
     /**
      * {@inheritdoc}
      */
-    public function edit($id, array $parameters, $createIfNotExists = false)
+    public function edit($id, array $parameters, $createIfNotExists = false, $timeout = null)
     {
         return $this->actionNotSupported('edit');
     }
