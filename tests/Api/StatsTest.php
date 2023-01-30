@@ -12,7 +12,7 @@ namespace Mautic\Tests\Api;
 
 class StatsTest extends MauticApiTestCase
 {
-    public function setUp()
+    public function setUp():void
     {
         $this->api = $this->getContext('stats');
     }
@@ -22,7 +22,7 @@ class StatsTest extends MauticApiTestCase
         // Store tables and columns
         static $tables, $tableColumns;
         if (empty($tables)) {
-            $response     = $this->api->get();
+            $response     = $this->api->get(1);
             $tables       = $response['availableTables'];
             $tableColumns = $response['tableColumns'];
         }

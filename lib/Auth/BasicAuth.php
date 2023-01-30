@@ -65,14 +65,14 @@ class BasicAuth extends AbstractAuth
      *
      * @var string
      */
-    private $password;
+    private $password = '';
 
     /**
      * Username or email, basically the Login Identifier.
      *
      * @var string
      */
-    private $userName;
+    private $userName = '';
 
     /**
      * {@inheritdoc}
@@ -88,13 +88,17 @@ class BasicAuth extends AbstractAuth
      *
      * @throws RequiredParameterMissingException
      */
-    public function setup($userName, $password)
+    public function setup($userName = '', $password = '')
     {
         // we MUST have the username and password. No Blanks allowed!
         //
         // remove blanks else Empty doesn't work
-        $userName = trim($userName);
-        $password = trim($password);
+        if($userName){
+            $userName = trim($userName);
+        }
+        if($password){
+            $password = trim($password);
+        }
 
         if (empty($userName) || empty($password)) {
             //Throw exception if the required parameters were not found

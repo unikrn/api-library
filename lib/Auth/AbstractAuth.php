@@ -100,7 +100,7 @@ abstract class AbstractAuth implements AuthInterface
     /**
      * {@inheritdoc}
      *
-     * @throws UnexpectedResponseFormatException|Exception
+     * @throws UnexpectedResponseFormatException|\Exception
      */
     public function makeRequest($url, array $parameters = [], $method = 'GET', array $settings = [])
     {
@@ -109,7 +109,9 @@ abstract class AbstractAuth implements AuthInterface
         list($url, $parameters) = $this->separateUrlParams($url, $parameters);
 
         //make sure $method is capitalized for congruency
-        $method  = strtoupper($method);
+        if($method){
+            $method  = strtoupper($method);
+        }
         $headers = (isset($settings['headers']) && is_array($settings['headers'])) ? $settings['headers'] : [];
 
         list($headers, $parameters) = $this->prepareRequest($url, $headers, $parameters, $method, $settings);

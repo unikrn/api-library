@@ -35,7 +35,7 @@ class Themes extends Api
     /**
      * {@inheritdoc}
      */
-    public function edit($id, array $parameters, $createIfNotExists = false)
+    public function edit($id, array $parameters, $createIfNotExists = false, $timeout = null)
     {
         return $this->actionNotSupported('edit');
     }
@@ -43,7 +43,7 @@ class Themes extends Api
     /**
      * @return array|mixed
      */
-    public function create(array $parameters)
+    public function create(array $parameters, $timeout = null)
     {
         if (!isset($parameters['file'])) {
             throw new \InvalidArgumentException('theme zip file must be set in parameters');
@@ -55,7 +55,7 @@ class Themes extends Api
     /**
      * {@inheritdoc}
      */
-    public function createBatch(array $parameters)
+    public function createBatch(array $parameters, $timeout = null)
     {
         return $this->actionNotSupported('createBatch');
     }
@@ -63,7 +63,7 @@ class Themes extends Api
     /**
      * {@inheritdoc}
      */
-    public function editBatch(array $parameters, $createIfNotExists = false)
+    public function editBatch(array $parameters, $createIfNotExists = false, $timeout = null)
     {
         return $this->actionNotSupported('editBatch');
     }
@@ -71,7 +71,7 @@ class Themes extends Api
     /**
      * {@inheritdoc}
      */
-    public function deleteBatch(array $ids)
+    public function deleteBatch(array $ids, $timeout = null)
     {
         return $this->actionNotSupported('deleteBatch');
     }

@@ -12,7 +12,7 @@ namespace Mautic\Tests\Api;
 
 class PagesTest extends MauticApiTestCase
 {
-    public function setUp()
+    public function setUp():void
     {
         $this->api         = $this->getContext('pages');
         $this->testPayload = [
@@ -21,21 +21,20 @@ class PagesTest extends MauticApiTestCase
             'customHtml' => '<!DOCTYPE html>
 <html lang="en" dir="ltr">
     <head>
+        <title></title>
         <script>console.log(\'hi there\')</script>
     </head>
     <body>
         <div data-section-wrapper="1">
-            <center>
-                <table data-section="1" style="margin: 0 auto;border-collapse: collapse !important;width: 600px;" cellpadding="0" cellspacing="0" width="600" class="w320">
-                    <tr>
-                        <td style="font-size: 30px;text-align: center;font-family: \'Droid Sans\', \'Helvetica Neue\', \'Arial\', \'sans-serif\' !important;font-weight: 400;" data-slot-container="1">
-                            <div data-slot="text">
-                                Awesome Co
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </center>
+            <table data-section="1" style="margin: 0 auto;border-collapse: collapse !important;width: 600px;" class="w320">
+                <tr>
+                    <td style="font-size: 30px;text-align: center;font-family: \'Droid Sans\', \'Helvetica Neue\', \'Arial\', \'sans-serif\' !important;font-weight: 400;" data-slot-container="1">
+                        <div data-slot="text">
+                            Awesome Co
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </body>
 </html>',

@@ -12,11 +12,11 @@ namespace Mautic\Tests\Api;
 
 use Mautic\Tests\Api;
 
-class CompanyFieldTest extends ContactFieldsTest
+class CompanyFieldsTest extends ContactFieldsTest
 {
     protected $prefix = 'Company ';
 
-    public function setUp()
+    public function setUp():void
     {
         $this->api         = $this->getContext('companyFields');
         $this->testPayload = [

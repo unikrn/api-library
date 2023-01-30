@@ -49,7 +49,7 @@ class CampaignsTest extends MauticApiTestCase
 
     protected $skipPayloadAssertion = ['events', 'forms', 'lists', 'canvasSettings', 'dateModified', 'dateAdded'];
 
-    public function setUp()
+    public function setUp() :void
     {
         $this->api      = $this->getContext('campaigns');
         $this->eventApi = $this->getContext('campaignEvents');
@@ -242,8 +242,8 @@ class CampaignsTest extends MauticApiTestCase
         $response = $this->api->edit($campaign['id'], $campaign);
         $this->assertPayload($response, $campaign);
 
-        foreach ($response[$this->api->itemName()]['events'] as $event) {
-            $this->assertEquals($event['name'], 'Event Name Modified');
+        foreach ($response[$this->api->itemName()]['events'] as $ev) {
+            $this->assertEquals($ev['name'], 'Event Name Modified');
         }
 
         //now delete the campaign
@@ -365,7 +365,7 @@ class CampaignsTest extends MauticApiTestCase
         $this->api = $originalApi;
     }
 
-    public function testCampaignContactGetList($cleanup = true)
+    public function testCampaignContactGetList($cleanup = true):array|void
     {
         $this->setUpPayloadClass();
         $response = $this->api->create($this->testPayload);

@@ -21,11 +21,12 @@ abstract class MauticApiTestCase extends TestCase
     protected $config               = null;
     protected $skipPayloadAssertion = [];
     protected $testPayload          = [];
+    protected $apiFiles = null;
 
     /** @var Api */
     protected $api;
 
-    public function setUp()
+    public function setUp() :void
     {
         $this->testPayload = [];
     }
@@ -43,7 +44,7 @@ abstract class MauticApiTestCase extends TestCase
         $auth    = $apiAuth->newAuth($this->config, $authMethod);
         if ('BasicAuth' != $authMethod) {
             if (empty($this->config['refreshToken']) && !$auth->isAuthorized()) {
-                $this->assertTrue($authorized, 'Authorization failed. Check credentials in local.config.php.');
+                $this->assertTrue(false, 'Authorization failed. Check credentials in local.config.php.');
             } else {
                 try {
                     $auth->validateAccessToken();
