@@ -48,7 +48,7 @@ class Stats extends Api
 
         $parameters = array_filter($parameters);
 
-        return $this->makeRequest($this->endpoint.'/'.$table, $parameters, $timeout);
+        return $this->makeRequest($this->endpoint.'/'.$table, $parameters, 'GET', $timeout);
     }
 
     /**
